@@ -1,4 +1,4 @@
-package = "wildleague"
+package = "template"
 version = "0.0.1-1"
 
 source = {
@@ -12,6 +12,7 @@ description = {
 }
 
 dependencies = {
+
 	"lua-resty-jwt = 0.2.3-0",
 	"lapis = 1.14.0-1",
   "bcrypt = 2.3-1"

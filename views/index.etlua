@@ -1,0 +1,12 @@
+<% content_for("head", function() %>
+	<link rel="stylesheet" href="/static/styles/index.css">
+	<% end) %>
+
+		<div class="index-container">
+			<h1 class="index-title">Welcome to Lua Template</h1>
+			<p class="index-subtitle">A modern web application built with Lapis</p>
+			<div class="index-actions">
+				<a href="/signup" class="index-button-primary">Get Started</a>
+				<a href="/signin" class="index-button-secondary">Sign In</a>
+			</div>
+		</div>

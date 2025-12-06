@@ -1,0 +1,30 @@
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Lua template</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+		rel="stylesheet">
+	<link rel="stylesheet" href="/static/styles/nav.css">
+	<link rel="stylesheet" href="/static/styles/base.css">
+	<% content_for("head") %>
+</head>
+
+<body>
+	<nav class="navbar">
+		<div class="nav-container">
+			<a href="/" class="nav-brand">Lua Template</a>
+			<ul class="nav-links">
+				<li><a href="/" class="nav-link">Home</a></li>
+				<li><a href="/signin" class="nav-link">Sign In</a></li>
+				<li><a href="/signup" class="nav-button">Sign Up</a></li>
+			</ul>
+		</div>
+	</nav>
+	<% content_for("inner") %>
+</body>
+
+</html>
