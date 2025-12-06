@@ -1,6 +1,6 @@
 # Lua template
 
-## features
+# features
 - auth
 - landing page
 
@@ -8,3 +8,6 @@
 ## packages
 - lapis
 - sqlite
+
+# Frequent bugs
+-
