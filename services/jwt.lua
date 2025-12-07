@@ -30,14 +30,20 @@ end
 	return the payload
 ]]
 function JWTService:decode(token)
-	-- remove the 'bearer' from the token
-	token = string.match(token, '.*', 8)
-
-	if self:is_token_valid(token) then
+	if not token or type(token) ~= "string" then
 		return nil, 'Invalid Token'
 	end
 
+	-- remove the 'bearer' prefix if present
+	if string.sub(token, 1, 7) == "Bearer " then
+		token = string.sub(token, 8)
+	end
+
 	local obj = jwt:verify(config.secret, token)
+	if not obj or not obj.verified then
+		return nil, 'Invalid Token'
+	end
+
 	return obj.payload
 end
 
