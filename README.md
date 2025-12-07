@@ -3,15 +3,23 @@ Consider that this template was built for personal use, so a lot of the things h
 
 With that being said, contributions are welcome.
 
-# features
+### :rocket: features
 - auth
 - landing page
 
-## packages
+### :package: packages
 - lapis
 - sqlite
 
 # Setup
+
+## Create sqlite DB
+- on mac
+```bash
+sqlite3 <path>/db.sqlite
+```
+
+> Don't forget to update `config.lua`
 
 ## Install dependencies
 ```bash
@@ -38,6 +46,11 @@ Represents the **current** database schema. For migrations, I'm currently runnin
 I didn't know this until recently that you can generate files for models like: `lapis generate model <model-name>`.
 
 The same goes to generating a `.rockspec` file: `lapis generate rockspec --sqlite|--postgres|--mysql` (the db options here define the dependencies it will add on the rockspec file).
+
+## Components
+built using [HTML Web Components](https://developer.mozilla.org/en-US/docs/Web/API/Web_components).
+
+Example at `views/components/toast.etlua`
 
 # Frequent bugs
 The setup was done on Mac, so these bugs are mostly related to mac-lua setup

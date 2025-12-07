@@ -18,13 +18,25 @@
 		<div class="nav-container">
 			<a href="/" class="nav-brand">Lua Template</a>
 			<ul class="nav-links">
-				<li><a href="/" class="nav-link">Home</a></li>
-				<li><a href="/signin" class="nav-link">Sign In</a></li>
-				<li><a href="/signup" class="nav-button">Sign Up</a></li>
+				<% if current_user then %>
+					<li><span class="nav-link" style="color: rgba(255, 255, 255, 0.8);">Hello, <%= current_user.username %></span>
+					</li>
+					<li>
+						<form method="POST" action="/logout" style="display: inline;">
+							<button type="submit" class="nav-button" style="background: transparent;">
+								<img style="width: 1rem;" src="/static/icons/logout.svg" />
+							</button>
+						</form>
+					</li>
+					<% else %>
+						<li><a href="/signin" class="nav-link">Sign In</a></li>
+						<li><a href="/signup" class="nav-button">Sign Up</a></li>
+						<% end %>
 			</ul>
 		</div>
 	</nav>
 	<% content_for("inner") %>
+		<% render("views.components.toast") %>
 </body>
 
 </html>

@@ -1,0 +1,94 @@
+<link rel="stylesheet" href="/static/styles/components/toast.css">
+
+<div id="toast-container" class="toast-container"></div>
+
+<template id="toast-template">
+	<div class="toast" part="toast">
+		<header class="toast-header" part="header">
+			<slot name="header"></slot>
+		</header>
+
+		<div class="toast-content" part="content">
+			<slot name="content"></slot>
+		</div>
+
+		<button class="toast-close" part="close" onclick="this.closest('.toast').remove()">x</button>
+	</div>
+</template>
+
+<script>
+	(function () {
+		const Toast = {
+			container: null,
+			template: null,
+
+			init: function () {
+				this.container = document.getElementById('toast-container');
+				this.template = document.getElementById('toast-template');
+			},
+
+			show: function (message, type = 'info', duration = 3000) {
+				if (!this.container) this.init();
+
+				const toast = this.template.content.cloneNode(true);
+				const toastElement = toast.querySelector('.toast');
+				toastElement.classList.add(`toast-${type}`);
+
+				const contentSlot = toast.querySelector('[part="content"]');
+				contentSlot.textContent = message;
+
+				this.container.appendChild(toast);
+				const insertedToast = this.container.lastElementChild;
+
+				setTimeout(() => insertedToast.classList.add('toast-show'), 10);
+
+				if (duration > 0) {
+					setTimeout(() => this.hide(insertedToast), duration);
+				}
+
+				return insertedToast;
+			},
+
+			hide: function (toast) {
+				if (!toast) return;
+				toast.classList.remove('toast-show');
+				toast.classList.add('toast-hide');
+				setTimeout(() => {
+					if (toast.parentNode) {
+						toast.parentNode.removeChild(toast);
+					}
+				}, 300);
+			},
+
+			success: function (message, duration) {
+				return this.show(message, 'success', duration);
+			},
+
+			error: function (message, duration) {
+				return this.show(message, 'error', duration);
+			},
+
+			info: function (message, duration) {
+				return this.show(message, 'info', duration);
+			},
+
+			warning: function (message, duration) {
+				return this.show(message, 'warning', duration);
+			}
+		};
+
+		window.Toast = Toast;
+
+		// document.addEventListener('DOMContentLoaded', function () {
+		// 	const urlParams = new URLSearchParams(window.location.search);
+		// 	const message = urlParams.get('message');
+		// 	const type = urlParams.get('type') || 'info';
+
+		// 	if (message) {
+		// 		Toast.show(decodeURIComponent(message), type);
+		// 		const newUrl = window.location.pathname;
+		// 		window.history.replaceState({}, document.title, newUrl);
+		// 	}
+		// });
+	})();
+</script>

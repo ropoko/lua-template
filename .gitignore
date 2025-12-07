@@ -10,3 +10,5 @@ nginx.conf.compiled
 
 .DS_Store
 .env
+
+db/db.sqlite
