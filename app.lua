@@ -2,6 +2,7 @@ local lapis = require("lapis")
 local auth_service = require("services.auth")
 local Result = require("services.types.result")
 local JWTService = require("services.jwt")
+local json_params = require("lapis.application").json_params
 
 local app = lapis.Application()
 
@@ -35,7 +36,7 @@ app:get("/signup", function(self)
 	return { render = "signup" }
 end)
 
-app:post("/signup", function(self)
+app:post("/signup", json_params(function(self)
 	local username = self.params.username
 	local email = self.params.email
 	local password = self.params.password
@@ -44,16 +45,20 @@ app:post("/signup", function(self)
 		return { status = 400, json = { message = "Missing required fields" } }
 	end
 
-	auth_service:signup(username, email, password)
+	local result, data, error_message = auth_service:signup(username, email, password)
 
-	return { render = "index" }
-end)
+	if result == Result.ERROR or not data then
+		return { status = 400, json = { message = error_message or "Failed to create user" } }
+	end
+
+	return { status = 200, json = { message = "Sign up successful!" } }
+end))
 
 app:get("/signin", function(self)
 	return { render = "signin" }
 end)
 
-app:post("/signin", function(self)
+app:post("/signin", json_params(function(self)
 	local email_or_username = self.params.email
 	local password = self.params.password
 
@@ -69,8 +74,8 @@ app:post("/signin", function(self)
 
 	self.session.token = tostring(data.token)
 
-	return { redirect_to = "/" }
-end)
+	return { status = 200, json = { message = "Sign in successful!" } }
+end))
 
 app:post("/logout", function(self)
 	self.session.token = nil

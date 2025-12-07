@@ -5,7 +5,7 @@
 		<div class="signin-container">
 			<h2 class="signin-title">Sign In</h2>
 
-			<form method="POST" action="/signin" class="signin-form">
+			<form id="signin-form" class="signin-form">
 				<div class="signin-field">
 					<label for="email" class="signin-label">Email or Username</label>
 					<input type="text" id="email" name="email" required class="signin-input"
@@ -27,3 +27,32 @@
 				Don't have an account? <a href="/signup" class="signin-link">Sign up</a>
 			</p>
 		</div>
+
+		<script>
+			document.getElementById('signin-form').addEventListener('submit', function (event) {
+				event.preventDefault();
+				const formData = new FormData(this);
+				const data = Object.fromEntries(formData);
+
+				fetch('/signin', {
+					method: 'POST',
+					body: JSON.stringify(data),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
+					.then(response => {
+						if (!response.ok) {
+							return response.json().then(err => Promise.reject(err));
+						}
+						return response.json();
+					})
+					.then(data => {
+						Toast.success(data.message || 'Sign in successful!');
+						location.href = '/';
+					})
+					.catch(error => {
+						Toast.error(error.message || 'An error occurred during sign in');
+					});
+			});
+		</script>

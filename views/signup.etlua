@@ -5,7 +5,7 @@
 		<div class="signup-container">
 			<h2 class="signup-title">Create Account</h2>
 
-			<form method="POST" action="/signup" class="signup-form">
+			<form id="signup-form" class="signup-form">
 				<div class="signup-field">
 					<label for="username" class="signup-label">Username</label>
 					<input type="text" id="username" name="username" required class="signup-input"
@@ -38,3 +38,40 @@
 				Already have an account? <a href="/signin" class="signup-link">Sign in</a>
 			</p>
 		</div>
+
+		<script>
+			document.getElementById('signup-form').addEventListener('submit', function (event) {
+				event.preventDefault();
+				const formData = new FormData(this);
+				const data = Object.fromEntries(formData);
+
+				if (data.password !== data.password_confirm) {
+					Toast.error('Passwords do not match');
+					return;
+				}
+
+				fetch('/signup', {
+					method: 'POST',
+					body: JSON.stringify(data),
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
+					.then(response => {
+						if (!response.ok) {
+							return response.json().then(err => Promise.reject(err));
+						}
+						return response.json();
+					})
+					.then(data => {
+						Toast.success(data.message || 'Sign up successful!');
+
+						setTimeout(() => {
+							location.href = '/signin';
+						}, 1000);
+					})
+					.catch(error => {
+						Toast.error(error.message || 'An error occurred during sign up');
+					});
+			});
+		</script>

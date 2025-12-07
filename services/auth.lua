@@ -8,24 +8,25 @@ local AuthService = {}
 
 function AuthService:signup(username, email, password)
 	if User:find({ email = email }) then
-		return { status = 400, json = { message = "Email already exists" } }
+		return Result.ERROR, nil, "Email already in use"
 	end
 
 	if User:find({ username = username }) then
-		return { status = 400, json = { message = "Username already exists" } }
+		return Result.ERROR, nil, "Username already in use"
 	end
 
-	pcall(function()
-		local user = User:create({
-			username = username,
-			email = email,
-			password = password
-		})
+	local user = User:create({
+		username = username,
+		email = email,
+		password = password
+	})
 
-		return Result.SUCCESS, user
-	end)
 
-	return Result.ERROR, nil
+	if not user then
+		return Result.ERROR, nil, "Failed to create user"
+	end
+
+	return Result.SUCCESS, { user = user, message = "User created successfully" }
 end
 
 function AuthService:signin(email_or_username, password)
